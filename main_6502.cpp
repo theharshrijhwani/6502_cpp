@@ -1,13 +1,20 @@
 #include <iostream>
 using namespace std;
 
+using Byte = unsigned char;   // 8 bit
+using Word = unsigned short;  // 16 bit
+using u32 = unsigned int;     // 4 bit
+
+struct Mem {
+    static constexpr u32 MAX_MEM = 1024 * 64;
+    Byte Data[MAX_MEM];
+};
+
 struct CPU {
-    using Byte = unsigned char;   // 8bit
-    using Word = unsigned short;  // 16 bit
-    Word PC;                      // program counter
-    Word SP;                      // stack pointer
-    Byte A, X, Y;                 // accumulator, registers
-    Word PS;                      // processor status
+    Word PC;       // program counter
+    Word SP;       // stack pointer
+    Byte A, X, Y;  // accumulator, registers
+    Word PS;       // processor status
 
     Byte C : 1;  // carry flag
     Byte Z : 1;  // zero flag
@@ -28,6 +35,7 @@ struct CPU {
 
 int main() {
     CPU cpu;
+    Mem mem;
     cpu.Reset();
     return 0;
 }
