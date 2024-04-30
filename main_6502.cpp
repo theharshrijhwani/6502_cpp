@@ -8,6 +8,12 @@ using u32 = unsigned int;     // 4 bit
 struct Mem {
     static constexpr u32 MAX_MEM = 1024 * 64;
     Byte Data[MAX_MEM];
+
+    void Initialise() {
+        for (u32 i = 0; i < MAX_MEM; i++) {
+            Data[i] = 0;
+        }
+    }
 };
 
 struct CPU {
@@ -24,18 +30,19 @@ struct CPU {
     Byte V : 1;  // overflow flag
     Byte N : 1;  // negative flag
 
-    void Reset() {
+    void Reset(Mem &memory) {
         PC = 0xFFFC;                    // set program counter to fffc, reset
         SP = 0x00FF;                    // set stack pointer to 00ff , reset
         D = 0;                          // clear decimal flag
         A = X = Y = 0;                  // set accumulator and registers to 0
         C = Z = I = D = B = V = N = 0;  // flags to 0
+        memory.Initialise();
     }
 };
 
 int main() {
     CPU cpu;
     Mem mem;
-    cpu.Reset();
+    cpu.Reset(mem);
     return 0;
 }
