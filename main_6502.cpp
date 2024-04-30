@@ -62,7 +62,9 @@ struct CPU {
         return Data;
     }
 
-    static constexpr Byte INS_LDA_IM = 0xA9, INS_LDA_ZP = 0xA5;
+    static constexpr Byte INS_LDA_IM = 0xA9, 
+        INS_LDA_ZP = 0xA5,
+        INS_LDA_ZPX = 0xB5;
 
     void LDASetStatus() {
         Z = (A == 0);
@@ -82,6 +84,13 @@ struct CPU {
             } break;
             case INS_LDA_ZP: {
                 Byte ZeroPageAddr = FetchByte(Cycles, memory);
+                A = ReadByte(Cycles, ZeroPageAddr, memory);
+                LDASetStatus();
+            } break;
+            case INS_LDA_ZPX: {
+                Byte ZeroPageAddr = FetchByte(Cycles, memory);
+                ZeroPageAddr += X;
+                Cycles--;
                 A = ReadByte(Cycles, ZeroPageAddr, memory);
                 LDASetStatus();
             } break;
