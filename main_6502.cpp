@@ -87,5 +87,6 @@ int main() {
     mem[0xFFFD] = 0x42;
     // end - inline program
     cpu.Execute(2, mem);
+
     return 0;
 }
