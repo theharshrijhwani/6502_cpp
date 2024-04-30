@@ -14,6 +14,11 @@ struct Mem {
             Data[i] = 0;
         }
     }
+
+    // reading byte from memory
+    Byte operator[](u32 address) const {
+        return Data[address];
+    }
 };
 
 struct CPU {
@@ -38,11 +43,28 @@ struct CPU {
         C = Z = I = D = B = V = N = 0;  // flags to 0
         memory.Initialise();
     }
+
+    Byte FetchByte(u32 Cycles, Mem &memory) {
+        Byte Data = memory[PC];
+        PC++;
+        Cycles--;
+        return Data;
+    }
+
+    void Execute(u32 Cycles, Mem &memory) {
+        while (Cycles--) {
+            Byte Ins = FetchByte(
+                Cycles,
+                memory);  // fetch instruction with help of program counter
+            (void)Ins;
+        }
+    }
 };
 
 int main() {
     CPU cpu;
     Mem mem;
     cpu.Reset(mem);
+    cpu.Execute(2, mem);
     return 0;
 }
